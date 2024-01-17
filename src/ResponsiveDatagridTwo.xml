@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="incentro.responsivedatagridtwo.ResponsiveDatagridTwo" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Responsive Data grid 2</name>
+    <description>Make Datagrid 2 columns respond to the page width and hide columns behind a collapsible chevron when there is less room.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="dataGridWidget" type="widgets" required="true">
+                <caption>Datagridv2 widget</caption>
+                <description>Place a Datagridv2 widget inside.</description>
+            </property>
+            <property key="maxColumnsMobile" type="integer" defaultValue="3">
+                <caption>Max columns mobile</caption>
+                <description>Show this amount of columns on mobile screens.</description>
+            </property>
+            <property key="maxColumnsTablet" type="integer" defaultValue="5">
+                <caption>Max columns tablet</caption>
+                <description>Show this amount of columns on tablet screens.</description>
+            </property>
+            <property key="mobileBreakpoint" type="integer" defaultValue="576">
+                <caption>Mobile breakpoint</caption>
+                <description>Mobile resolution ENDS at (px).</description>
+            </property>
+            <property key="desktopBreakpoint" type="integer" defaultValue="992">
+                <caption>Desktop breakpoint</caption>
+                <description>Desktop resolution STARTS at (px) (anything in between is tablet).</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
