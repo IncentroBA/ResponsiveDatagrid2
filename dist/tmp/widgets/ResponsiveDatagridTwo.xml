@@ -5,11 +5,10 @@
         xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
     <name>Responsive Data grid 2</name>
     <description>Make Datagrid 2 columns respond to the page width and hide columns behind a collapsible chevron when there is less room.</description>
-    <icon/>
     <properties>
         <propertyGroup caption="General">
             <property key="dataGridWidget" type="widgets" required="true">
-                <caption>Datagridv2 widget</caption>
+                <caption>Place a single Data grid 2 widget</caption>
                 <description>Place a Datagridv2 widget inside.</description>
             </property>
             <property key="maxColumnsMobile" type="integer" defaultValue="3">
