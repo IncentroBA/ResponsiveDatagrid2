@@ -43,18 +43,26 @@ export function ResponsiveDatagridTwo({
     function checkLastColumn(row) {
         // Check the TH for custom content
         const mostRightTH = row.querySelector(".th:last-of-type") || row.querySelector(".th:nth-last-child(2)");
-        if (mostRightTH && mostRightTH.querySelector("span").innerHTML === "&nbsp;") {
-            return true;
-        } else if (mostRightTH) {
-            return false;
+        if (mostRightTH) {
+            if (mostRightTH.classList.contains("column-selector")) {
+                return true;
+            } else if (mostRightTH.querySelector("span").innerHTML === "&nbsp;") {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         // Check the TD for custom content
         const MostRightTD = row.querySelector(".td:last-of-type") || row.querySelector(".td:nth-last-child(2)");
-        if (MostRightTD && MostRightTD.querySelector(".td-custom-content")) {
-            return true;
-        } else if (MostRightTD) {
-            return false;
+        if (MostRightTD) {
+            if (MostRightTD.classList.contains("column-selector")) {
+                return true;
+            } else if (MostRightTD.querySelector(".td-custom-content")) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         return null;
