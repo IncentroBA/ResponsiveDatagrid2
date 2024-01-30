@@ -1,9 +1,13 @@
 import { createElement } from "react";
 
-export function preview() {
+export function preview({ dataGridWidget }) {
+    const ContentRenderer = dataGridWidget.renderer;
+
     return (
         <div className="responsive-datagrid-preview">
-            Responsive Data grid 2 widget (does not display the data grid that is inside)
+            <ContentRenderer caption="Place a Datagridv2 widget inside.">
+                <div className="responsive-datagrid-preview-content" />
+            </ContentRenderer>
         </div>
     );
 }

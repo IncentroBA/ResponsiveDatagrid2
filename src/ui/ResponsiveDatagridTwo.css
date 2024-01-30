@@ -1,10 +1,12 @@
 .responsive-datagrid-preview {
   background-color: white;
-  border: solid 1px #ced0d3;
+  border: dashed 1px #ced0d3;
   border-radius: 4px;
   margin-bottom: 24px;
   padding: 8px;
 }
+
+.responsive-datagrid-preview p {margin: 0;}
 
 .responsive-datagrid .widget-datagrid .btn-td-collapse svg {
     transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
