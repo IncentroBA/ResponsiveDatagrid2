@@ -220,6 +220,7 @@ export function ResponsiveDatagridTwo({
                 }
                 maxColumnArray.join(" ").replace(";", "");
                 maxColumnArray.unshift("fit-content(100%)"); // add new column for the chevron
+                maxColumnArray.splice(2, 1, "1fr"); // convert at least one auto-fill column to auto-fill
                 tableContent.setAttribute(
                     "style",
                     `grid-template-columns: ${maxColumnArray.join(" ").replace(";", "")};`
