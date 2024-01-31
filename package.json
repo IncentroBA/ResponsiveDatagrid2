@@ -1,7 +1,7 @@
 {
   "name": "responsivedatagridtwo",
   "widgetName": "ResponsiveDatagridTwo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Make Datagrid 2 columns respond to the page width and hide columns behind a collapsible chevron when there is less room.",
   "copyright": "2024 Incentro International B.V.",
   "author": "Rob Duits",
