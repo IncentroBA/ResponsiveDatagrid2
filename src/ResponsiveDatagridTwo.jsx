@@ -211,7 +211,7 @@ export function ResponsiveDatagridTwo({
                     datagridWidgetRef.current.querySelector(".widget-datagrid .tr[role='row']:nth-child(2)")
                 );
                 const offset = endsWithCustomContent ? -1 : 0;
-                const columnArray = templateColumns.replace("grid-template-columns: ", "").split(" ");
+                const columnArray = templateColumns.replace("grid-template-columns: ", "").split(/ (?![^()]*\))/); // Regex for space when not inside ()
                 const visibleColumns = screenMode === "mobile" ? maxColumnsMobile : maxColumnsTablet;
                 const maxColumnArray = columnArray.slice(columnArray.length - visibleColumns - offset); // remove all but the last maxColumnsMobile
 
