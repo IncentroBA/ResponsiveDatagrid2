@@ -4,7 +4,7 @@
         xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
     <name>Responsive Data grid 2</name>
-    <description>Make Datagrid 2 columns respond to the page width and hide columns behind a collapsible chevron when there is less room.</description>
+    <description>Add-on for Data grid 2 to make columns respond to the page width and hide columns behind a collapsible chevron when there is less room.</description>
     <studioProCategory>Data containers</studioProCategory>
     <studioCategory>Data containers</studioCategory>
     <properties>
