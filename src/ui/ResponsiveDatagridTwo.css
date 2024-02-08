@@ -26,7 +26,7 @@
 }
 
 .responsive-datagrid .widget-datagrid .tr-collapsible:not(:empty) {
-    background-color: var(--gray, #fafafa);
+    background-color: var(--gray-lighter, #fafafa);
     border-bottom: solid 1px var(--gray-lighter, #e8e8e8);
     display: grid;
     gap: var(--spacing-regular, 16px);

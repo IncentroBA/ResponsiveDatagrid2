@@ -29,6 +29,10 @@
                 <caption>Desktop breakpoint</caption>
                 <description>Desktop resolution STARTS at (px) (anything in between is tablet).</description>
             </property>
+            <property key="keepLastBoolean" type="boolean" defaultValue="true">
+                <caption>Keep last column</caption>
+                <description>Set to true if the last column contains actions or data that should stay in row.</description>
+            </property>
         </propertyGroup>
     </properties>
 </widget>

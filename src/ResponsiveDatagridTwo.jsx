@@ -4,6 +4,7 @@ import { createElement, useEffect, useRef, useState } from "react";
 export function ResponsiveDatagridTwo({
     dataGridWidget,
     desktopBreakpoint,
+    keepLastBoolean,
     maxColumnsMobile,
     maxColumnsTablet,
     mobileBreakpoint,
@@ -11,6 +12,7 @@ export function ResponsiveDatagridTwo({
 }) {
     const style = rest.class || "";
     const datagridWidgetRef = useRef(null);
+    const datagridRowsRef = useRef([]);
     const [tableContent, setTableContent] = useState(null);
     const [canRender, setCanRender] = useState(false);
     const [templateColumns, setTemplateColumns] = useState(null);
@@ -21,7 +23,6 @@ export function ResponsiveDatagridTwo({
         childList: true, // This is a must have for the observer with subtree
         subtree: true // Set to true if changes must also be observed in descendants.
     };
-    const [shouldSkip, setShouldSkip] = useState(false);
 
     function screenSizeCheck() {
         if (window.innerWidth <= mobileBreakpoint) {
@@ -39,36 +40,22 @@ export function ResponsiveDatagridTwo({
         }
     }
 
-    // Check the last column for custom content. returns true if it's the case
-    function checkLastColumn(row) {
-        // Check the TH for custom content
-        const mostRightTH = row.querySelector(".th:last-of-type") || row.querySelector(".th:nth-last-child(2)");
-        if (mostRightTH) {
-            if (mostRightTH.classList.contains("column-selector")) {
-                return true;
-            } else if (mostRightTH.querySelector("span").innerHTML === "&nbsp;") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        // Check the TD for custom content
-        const MostRightTD = row.querySelector(".td:last-of-type") || row.querySelector(".td:nth-last-child(2)");
-        if (MostRightTD) {
-            if (MostRightTD.classList.contains("column-selector")) {
-                return true;
-            } else if (MostRightTD.querySelector(".td-custom-content")) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        return null;
-    }
-
     useEffect(() => {
+        function setGridColumns() {
+            const offset = keepLastBoolean ? -1 : 0;
+            const columnArray = templateColumns.replace("grid-template-columns: ", "").split(/ (?![^()]*\))/); // Regex for space when not inside ()
+            const visibleColumns = screenMode === "mobile" ? maxColumnsMobile : maxColumnsTablet;
+            const maxColumnArray = columnArray.slice(columnArray.length - visibleColumns - offset); // remove all but the last maxColumnsMobile
+
+            if (offset) {
+                maxColumnArray.push("fit-content(100%)");
+            }
+            maxColumnArray.join(" ").replace(";", "");
+            maxColumnArray.unshift("fit-content(100%)"); // add new column for the chevron
+            maxColumnArray.splice(2, 1, "1fr"); // convert at least one auto-fill column to auto-fill
+            tableContent.setAttribute("style", `grid-template-columns: ${maxColumnArray.join(" ").replace(";", "")};`);
+        }
+
         function toggleTrCollapse(event, chevronBtn) {
             const notCollapsed = [...document.querySelectorAll(".tr-collapsible:not(.tr-collapsible--collapsed)")];
             if (notCollapsed.length) {
@@ -104,7 +91,7 @@ export function ResponsiveDatagridTwo({
             if (!row.querySelector(".td.chevron-td")) {
                 const selectTD = row.querySelector(".td");
                 const borderClass = row.querySelector(".td-borders") ? "td-borders " : "";
-                const extraTD = `<div class="td ${borderClass}chevron-td btn-td-collapse" role="gridcell"><div class="td-custom-content"><svg height="16" width="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8.00004 11.1369C8.21033 11.1369 8.38741 11.0539 8.54789 10.8934L12.4935 6.85368C12.6208 6.72087 12.6872 6.56592 12.6872 6.37777C12.6872 5.9904 12.3829 5.68604 12.0066 5.68604C11.8239 5.68604 11.6469 5.76351 11.5085 5.90186L8.00557 9.50439L4.49158 5.90186C4.35876 5.76904 4.18722 5.68604 3.99353 5.68604C3.61723 5.68604 3.31287 5.9904 3.31287 6.37777C3.31287 6.56038 3.38481 6.72087 3.51208 6.85368L7.45772 10.8934C7.62374 11.0594 7.79529 11.1369 8.00004 11.1369Z"/></svg></div></div>`;
+                const extraTD = `<div class="td ${borderClass}chevron-td btn-td-collapse" role="gridcell"><div class="td-custom-content"><svg height="16" width="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M8.00004 11.1369C8.21033 11.1369 8.38741 11.0539 8.54789 10.8934L12.4935 6.85368C12.6208 6.72087 12.6872 6.56592 12.6872 6.37777C12.6872 5.9904 12.3829 5.68604 12.0066 5.68604C11.8239 5.68604 11.6469 5.76351 11.5085 5.90186L8.00557 9.50439L4.49158 5.90186C4.35876 5.76904 4.18722 5.68604 3.99353 5.68604C3.61723 5.68604 3.31287 5.9904 3.31287 6.37777C3.31287 6.56038 3.38481 6.72087 3.51208 6.85368L7.45772 10.8934C7.62374 11.0594 7.79529 11.1369 8.00004 11.1369Z"/></svg></div></div>`;
                 if (selectTD && selectTD.querySelector(".td-custom-content")) {
                     selectTD.insertAdjacentHTML("afterend", extraTD);
                 } else if (selectTD) {
@@ -121,20 +108,18 @@ export function ResponsiveDatagridTwo({
         }
 
         function moveColumnsInsideCollapsibleDiv(row) {
-            const endsWithCustomContent = checkLastColumn(row);
-            const offset = endsWithCustomContent ? -1 : 0;
+            const offset = keepLastBoolean ? -1 : 0;
             const visibleColumns = screenMode === "mobile" ? maxColumnsMobile : maxColumnsTablet;
             const THs = [...row.querySelectorAll(".th")];
             if (THs.length) {
-                THs.slice(THs.length - (THs.length - visibleColumns) - offset).forEach(TH => {
+                THs.slice(THs.length - (THs.length - visibleColumns) + offset, offset).forEach(TH => {
                     TH.classList.add("hidden");
                 });
             }
 
             const TDs = [...row.querySelectorAll(".td")];
             if (TDs.length) {
-                const newTDs = TDs.slice(TDs.length - (TDs.length - visibleColumns) - offset);
-                newTDs.forEach((TD, index) => {
+                TDs.slice(TDs.length - (TDs.length - visibleColumns) + offset, offset).forEach((TD, index) => {
                     TD.classList.add("hidden");
                     const headers = [
                         ...datagridWidgetRef.current.querySelectorAll(
@@ -153,8 +138,7 @@ export function ResponsiveDatagridTwo({
 
         function renderElements() {
             // Process each row
-            const rows = [...datagridWidgetRef.current.querySelectorAll(".tr[role=row]")];
-            rows.forEach(row => {
+            datagridRowsRef.current.forEach(row => {
                 renderCollapsibleDiv(row);
                 moveColumnsInsideCollapsibleDiv(row);
                 renderChevron(row);
@@ -207,24 +191,7 @@ export function ResponsiveDatagridTwo({
                 resetHiddenColumns();
                 resetChevrons();
             } else {
-                const endsWithCustomContent = checkLastColumn(
-                    datagridWidgetRef.current.querySelector(".widget-datagrid .tr[role='row']:nth-child(2)")
-                );
-                const offset = endsWithCustomContent ? -1 : 0;
-                const columnArray = templateColumns.replace("grid-template-columns: ", "").split(/ (?![^()]*\))/); // Regex for space when not inside ()
-                const visibleColumns = screenMode === "mobile" ? maxColumnsMobile : maxColumnsTablet;
-                const maxColumnArray = columnArray.slice(columnArray.length - visibleColumns - offset); // remove all but the last maxColumnsMobile
-
-                if (offset) {
-                    maxColumnArray.push("fit-content(100%)");
-                }
-                maxColumnArray.join(" ").replace(";", "");
-                maxColumnArray.unshift("fit-content(100%)"); // add new column for the chevron
-                maxColumnArray.splice(2, 1, "1fr"); // convert at least one auto-fill column to auto-fill
-                tableContent.setAttribute(
-                    "style",
-                    `grid-template-columns: ${maxColumnArray.join(" ").replace(";", "")};`
-                );
+                setGridColumns();
 
                 resetCollapsibles();
                 resetHiddenColumns();
@@ -233,6 +200,30 @@ export function ResponsiveDatagridTwo({
                 renderElements();
                 checkForSorting();
             }
+        }
+
+        if (screenMode !== "desktop") {
+            // Detect a change in Data grid 2 after the initial rendering of everything
+            const observer = new MutationObserver(() => {
+                observer.disconnect();
+                if (datagridRowsRef.current !== datagridWidgetRef.current.querySelectorAll(".tr[role=row]")) {
+                    datagridRowsRef.current = [...datagridWidgetRef.current.querySelectorAll(".tr[role=row]")];
+                    resetCollapsibles();
+                    resetHiddenColumns();
+                    resetChevrons();
+
+                    renderElements();
+                    checkForSorting();
+                }
+
+                observer.observe(datagridWidgetRef.current, config);
+            });
+
+            if (datagridWidgetRef && datagridWidgetRef.current) {
+                observer.observe(datagridWidgetRef.current, config);
+            }
+
+            return () => observer.disconnect();
         }
     });
 
@@ -267,9 +258,6 @@ export function ResponsiveDatagridTwo({
     }, [desktopBreakpoint, mobileBreakpoint, tableContent]);
 
     if (canRender) {
-        if (shouldSkip === false) {
-            setShouldSkip(true);
-        }
         window.addEventListener("resize", screenSizeCheck);
     }
 
