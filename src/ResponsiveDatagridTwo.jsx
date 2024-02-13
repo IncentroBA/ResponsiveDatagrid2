@@ -57,21 +57,26 @@ export function ResponsiveDatagridTwo({
         }
 
         function toggleTrCollapse(event, chevronBtn) {
-            const notCollapsed = [...document.querySelectorAll(".tr-collapsible:not(.tr-collapsible--collapsed)")];
+            const notCollapsed = [
+                ...document.querySelectorAll(".tr-resp-collapsible:not(.tr-resp-collapsible--collapsed)")
+            ];
             if (notCollapsed.length) {
                 notCollapsed.forEach(chevronRow => {
-                    const rowBtn = chevronRow.parentElement.querySelector(".btn-td-collapse");
+                    const rowBtn = chevronRow.parentElement.querySelector(".btn-td-resp-collapse");
                     if (rowBtn !== chevronBtn) {
-                        chevronRow.classList.toggle("tr-collapsible--collapsed");
+                        chevronRow.classList.toggle("tr-resp-collapsible--collapsed");
                         chevronRow.parentElement
-                            .querySelector(".btn-td-collapse")
-                            .classList.toggle("btn-td-collapse--active");
+                            .querySelector(".btn-td-resp-collapse")
+                            .classList.toggle("btn-td-resp-collapse--active");
                     }
                 });
             }
 
-            chevronBtn.classList.toggle("btn-td-collapse--active");
-            event.target.closest(".tr").querySelector(".tr-collapsible").classList.toggle("tr-collapsible--collapsed");
+            chevronBtn.classList.toggle("btn-td-resp-collapse--active");
+            event.target
+                .closest(".tr")
+                .querySelector(".tr-resp-collapsible")
+                .classList.toggle("tr-resp-collapsible--collapsed");
         }
 
         // Check the column to insert the chevron
@@ -91,7 +96,7 @@ export function ResponsiveDatagridTwo({
             if (!row.querySelector(".td.chevron-td")) {
                 const selectTD = row.querySelector(".td");
                 const borderClass = row.querySelector(".td-borders") ? "td-borders " : "";
-                const extraTD = `<div class="td ${borderClass}chevron-td btn-td-collapse" role="gridcell"><div class="td-custom-content"><svg height="16" width="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M8.00004 11.1369C8.21033 11.1369 8.38741 11.0539 8.54789 10.8934L12.4935 6.85368C12.6208 6.72087 12.6872 6.56592 12.6872 6.37777C12.6872 5.9904 12.3829 5.68604 12.0066 5.68604C11.8239 5.68604 11.6469 5.76351 11.5085 5.90186L8.00557 9.50439L4.49158 5.90186C4.35876 5.76904 4.18722 5.68604 3.99353 5.68604C3.61723 5.68604 3.31287 5.9904 3.31287 6.37777C3.31287 6.56038 3.38481 6.72087 3.51208 6.85368L7.45772 10.8934C7.62374 11.0594 7.79529 11.1369 8.00004 11.1369Z"/></svg></div></div>`;
+                const extraTD = `<div class="td ${borderClass}chevron-td btn-td-resp-collapse" role="gridcell"><div class="td-custom-content"><svg height="16" width="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M8.00004 11.1369C8.21033 11.1369 8.38741 11.0539 8.54789 10.8934L12.4935 6.85368C12.6208 6.72087 12.6872 6.56592 12.6872 6.37777C12.6872 5.9904 12.3829 5.68604 12.0066 5.68604C11.8239 5.68604 11.6469 5.76351 11.5085 5.90186L8.00557 9.50439L4.49158 5.90186C4.35876 5.76904 4.18722 5.68604 3.99353 5.68604C3.61723 5.68604 3.31287 5.9904 3.31287 6.37777C3.31287 6.56038 3.38481 6.72087 3.51208 6.85368L7.45772 10.8934C7.62374 11.0594 7.79529 11.1369 8.00004 11.1369Z"/></svg></div></div>`;
                 if (selectTD && selectTD.querySelector(".td-custom-content")) {
                     selectTD.insertAdjacentHTML("afterend", extraTD);
                 } else if (selectTD) {
@@ -101,8 +106,8 @@ export function ResponsiveDatagridTwo({
         }
 
         function renderCollapsibleDiv(row) {
-            const collapsibleDiv = `<div class="tr-collapsible tr-collapsible--collapsed"></div>`;
-            if (!row.querySelector(".tr-collapsible")) {
+            const collapsibleDiv = `<div class="tr-resp-collapsible tr-resp-collapsible--collapsed"></div>`;
+            if (!row.querySelector(".tr-resp-collapsible")) {
                 row.insertAdjacentHTML("beforeend", collapsibleDiv);
             }
         }
@@ -126,8 +131,8 @@ export function ResponsiveDatagridTwo({
                             '.widget-datagrid .tr[role="row"]:first-child .th.hidden'
                         )
                     ];
-                    const collapsible = row.querySelector(".tr-collapsible");
-                    const collapsibleContent = `<div class="tr-collapsible__item">
+                    const collapsible = row.querySelector(".tr-resp-collapsible");
+                    const collapsibleContent = `<div class="tr-resp-collapsible__item">
                         <p class="td-text text-bold nomargin">${headers[index]?.querySelector("span").innerHTML}</p>
                             <span class="td-text">${TD.querySelector("span")?.innerHTML}</span>
                         </div>`;
@@ -144,14 +149,14 @@ export function ResponsiveDatagridTwo({
                 renderChevron(row);
             });
 
-            const chevronBtns = [...datagridWidgetRef.current.querySelectorAll(".btn-td-collapse")];
+            const chevronBtns = [...datagridWidgetRef.current.querySelectorAll(".btn-td-resp-collapse")];
             chevronBtns.forEach(chevronBtn =>
                 chevronBtn.addEventListener("click", event => toggleTrCollapse(event, chevronBtn))
             );
         }
 
         function resetCollapsibles() {
-            const allCollapsibles = [...datagridWidgetRef.current.querySelectorAll(".tr-collapsible")];
+            const allCollapsibles = [...datagridWidgetRef.current.querySelectorAll(".tr-resp-collapsible")];
             allCollapsibles.forEach(collapsible => collapsible.remove());
         }
 
@@ -208,12 +213,14 @@ export function ResponsiveDatagridTwo({
                 observer.disconnect();
                 if (datagridRowsRef.current !== datagridWidgetRef.current.querySelectorAll(".tr[role=row]")) {
                     datagridRowsRef.current = [...datagridWidgetRef.current.querySelectorAll(".tr[role=row]")];
-                    resetCollapsibles();
-                    resetHiddenColumns();
-                    resetChevrons();
+                    if (screenMode !== "desktop") {
+                        resetCollapsibles();
+                        resetHiddenColumns();
+                        resetChevrons();
 
-                    renderElements();
-                    checkForSorting();
+                        renderElements();
+                        checkForSorting();
+                    }
                 }
 
                 observer.observe(datagridWidgetRef.current, config);

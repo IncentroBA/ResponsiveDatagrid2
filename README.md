@@ -1,11 +1,15 @@
 ## Responsive Data grid 2
 
-Add-on for Data grid 2 to make columns respond to the page width and hide columns behind a collapsible chevron when
-there is less room.
+Add-on for Data grid 2 to automatically make columns respond to the page width and hide columns behind a collapsible
+chevron when there is less room.
+
+Aside from this add-on, there is also a [Collapsible Data grid 2](http://) add-on widget. This widget focuses on
+collapsible content but does not adjust column responsiveness. However, both widgets can be used together. Please note
+that currently, this setup would display two different chevrons.
 
 ## Typical usage scenario
 
-When you have a data grid 2 with many columns, but you also want the page to be responsive.
+When you have a Data grid 2 with a larger amount of columns while also requiring the page to be responsive.
 
 ## Features
 
