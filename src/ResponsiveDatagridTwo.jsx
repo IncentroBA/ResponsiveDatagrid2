@@ -57,6 +57,7 @@ export function ResponsiveDatagridTwo({
         }
 
         function toggleTrCollapse(event, chevronBtn) {
+            console.info("toggleTrCollapse");
             const notCollapsed = [
                 ...document.querySelectorAll(".tr-resp-collapsible:not(.tr-resp-collapsible--collapsed)")
             ];
@@ -174,21 +175,23 @@ export function ResponsiveDatagridTwo({
         }
 
         function onSort() {
-            setTimeout(() => {
-                resetCollapsibles();
-                resetHiddenColumns();
-                resetChevrons();
-                renderElements();
-            }, 100);
-        }
-
-        function checkForSorting() {
-            const rows = [...datagridWidgetRef.current.querySelectorAll(".tr[role=row]")];
-            const headers = [...rows[0].querySelectorAll(".th")];
-            headers.forEach(header => header.addEventListener("click", onSort));
+            if (
+                window.innerWidth <= mobileBreakpoint ||
+                (window.innerWidth > mobileBreakpoint && window.innerWidth < desktopBreakpoint)
+            ) {
+                console.info("onSort", screenMode);
+                setTimeout(() => {
+                    resetCollapsibles();
+                    resetHiddenColumns();
+                    resetChevrons();
+                    renderElements();
+                }, 100);
+            }
         }
 
         if (canRender && screenMode) {
+            const headers = [...datagridRowsRef.current[0].querySelectorAll(".th")];
+
             // For desktop leave / restore default. For other situations update to mobile / tablet columns
             if (screenMode === "desktop") {
                 tableContent.setAttribute("style", templateColumns);
@@ -197,13 +200,11 @@ export function ResponsiveDatagridTwo({
                 resetChevrons();
             } else {
                 setGridColumns();
-
                 resetCollapsibles();
                 resetHiddenColumns();
                 resetChevrons();
-
                 renderElements();
-                checkForSorting();
+                headers.forEach(header => header.addEventListener("click", onSort));
             }
         }
 
@@ -213,14 +214,10 @@ export function ResponsiveDatagridTwo({
                 observer.disconnect();
                 if (datagridRowsRef.current !== datagridWidgetRef.current.querySelectorAll(".tr[role=row]")) {
                     datagridRowsRef.current = [...datagridWidgetRef.current.querySelectorAll(".tr[role=row]")];
-                    if (screenMode !== "desktop") {
-                        resetCollapsibles();
-                        resetHiddenColumns();
-                        resetChevrons();
-
-                        renderElements();
-                        checkForSorting();
-                    }
+                    resetCollapsibles();
+                    resetHiddenColumns();
+                    resetChevrons();
+                    renderElements();
                 }
 
                 observer.observe(datagridWidgetRef.current, config);
