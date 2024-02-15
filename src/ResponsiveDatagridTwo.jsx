@@ -57,7 +57,6 @@ export function ResponsiveDatagridTwo({
         }
 
         function toggleTrCollapse(event, chevronBtn) {
-            console.info("toggleTrCollapse");
             const notCollapsed = [
                 ...document.querySelectorAll(".tr-resp-collapsible:not(.tr-resp-collapsible--collapsed)")
             ];
@@ -179,7 +178,6 @@ export function ResponsiveDatagridTwo({
                 window.innerWidth <= mobileBreakpoint ||
                 (window.innerWidth > mobileBreakpoint && window.innerWidth < desktopBreakpoint)
             ) {
-                console.info("onSort", screenMode);
                 setTimeout(() => {
                     resetCollapsibles();
                     resetHiddenColumns();
@@ -208,27 +206,27 @@ export function ResponsiveDatagridTwo({
             }
         }
 
-        if (screenMode !== "desktop") {
-            // Detect a change in Data grid 2 after the initial rendering of everything
-            const observer = new MutationObserver(() => {
-                observer.disconnect();
-                if (datagridRowsRef.current !== datagridWidgetRef.current.querySelectorAll(".tr[role=row]")) {
-                    datagridRowsRef.current = [...datagridWidgetRef.current.querySelectorAll(".tr[role=row]")];
+        // Detect a change in Data grid 2 after the initial rendering of everything
+        const observer = new MutationObserver(() => {
+            observer.disconnect();
+            if (datagridRowsRef.current !== datagridWidgetRef.current.querySelectorAll(".tr[role=row]")) {
+                datagridRowsRef.current = [...datagridWidgetRef.current.querySelectorAll(".tr[role=row]")];
+                if (screenMode !== "desktop") {
                     resetCollapsibles();
                     resetHiddenColumns();
                     resetChevrons();
                     renderElements();
                 }
-
-                observer.observe(datagridWidgetRef.current, config);
-            });
-
-            if (datagridWidgetRef && datagridWidgetRef.current) {
-                observer.observe(datagridWidgetRef.current, config);
             }
 
-            return () => observer.disconnect();
+            observer.observe(datagridWidgetRef.current, config);
+        });
+
+        if (datagridWidgetRef && datagridWidgetRef.current) {
+            observer.observe(datagridWidgetRef.current, config);
         }
+
+        return () => observer.disconnect();
     });
 
     useEffect(() => {
