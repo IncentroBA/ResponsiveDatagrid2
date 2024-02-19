@@ -3,9 +3,9 @@
 Add-on for Data grid 2 to automatically make columns respond to the page width and hide columns behind a collapsible
 chevron when there is less room.
 
-Aside from this add-on, there is also a [Collapsible Data grid 2](http://) add-on widget. This widget focuses on
-collapsible content but does not adjust column responsiveness. However, both widgets can be used together. Please note
-that currently, this setup would display two different chevrons.
+Aside from this add-on, there is also a [Collapsible Data grid 2](https://marketplace.mendix.com/link/component/222751)
+add-on widget. This widget focuses on collapsible content but does not adjust column responsiveness. However, both
+widgets can be used together. Please note that currently, this setup would display two different chevrons.
 
 ## Typical usage scenario
 
