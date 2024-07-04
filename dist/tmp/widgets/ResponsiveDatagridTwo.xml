@@ -33,6 +33,18 @@
                 <caption>Keep last column</caption>
                 <description>Set to true if the last column contains actions or data that should stay in row.</description>
             </property>
+            <property key="RenderChevron" type="enumeration" defaultValue="left">
+                <caption>Render chevron</caption>
+                <description/>
+                <enumerationValues>
+                    <enumerationValue key="left">Left</enumerationValue>
+                    <enumerationValue key="right">Right</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="forceAutoFill" type="boolean" defaultValue="true">
+                <caption>Autofill column</caption>
+                <description>Make sure at least 1 column is set to autofill for responsive use. only disable if it's not needed.</description>
+            </property>
         </propertyGroup>
     </properties>
 </widget>
