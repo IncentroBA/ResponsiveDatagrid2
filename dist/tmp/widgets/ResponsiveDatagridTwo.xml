@@ -13,22 +13,6 @@
                 <caption>Place a single Data grid 2 widget</caption>
                 <description>Place a Datagridv2 widget inside.</description>
             </property>
-            <property key="maxColumnsMobile" type="integer" defaultValue="3">
-                <caption>Max columns mobile</caption>
-                <description>Show this amount of columns on mobile screens.</description>
-            </property>
-            <property key="maxColumnsTablet" type="integer" defaultValue="5">
-                <caption>Max columns tablet</caption>
-                <description>Show this amount of columns on tablet screens.</description>
-            </property>
-            <property key="mobileBreakpoint" type="integer" defaultValue="576">
-                <caption>Mobile breakpoint</caption>
-                <description>Mobile resolution ENDS at (px).</description>
-            </property>
-            <property key="desktopBreakpoint" type="integer" defaultValue="992">
-                <caption>Desktop breakpoint</caption>
-                <description>Desktop resolution STARTS at (px) (anything in between is tablet).</description>
-            </property>
             <property key="keepLastBoolean" type="boolean" defaultValue="true">
                 <caption>Keep last column</caption>
                 <description>Set to true if the last column contains actions or data that should stay in row.</description>
@@ -45,6 +29,44 @@
                 <caption>Autofill column</caption>
                 <description>Make sure at least 1 column is set to autofill for responsive use. only disable if it's not needed.</description>
             </property>
+            <property key="breakpoints" type="object" isList="true" required="false">
+                <caption>Breakpoints</caption>
+                <description>Good defaults:
+mobile - 576px - 3 columns
+tablet   - 992px - 5 columns</description>
+                <properties>
+                    <propertyGroup caption="Breakpoints">
+                        <property key="for" type="enumeration" defaultValue="mobile">
+                            <caption>Breakpoint for</caption>
+                            <description>Any resolution larger is interpreted as Large Desktop and displays all columns.</description>
+                            <enumerationValues>
+                                <enumerationValue key="mobile">Mobile</enumerationValue>
+                                <enumerationValue key="tablet">Tablet</enumerationValue>
+                                <enumerationValue key="desktop">Desktop</enumerationValue>
+                            </enumerationValues>
+                        </property>
+                        <property key="value" type="integer" defaultValue="576">
+                            <caption>Value</caption>
+                            <description>in pixels</description>
+                        </property>
+                        <property key="columns" type="integer" defaultValue="3">
+                            <caption>Columns</caption>
+                            <description>The amount of visible columns</description>
+                        </property>
+                    </propertyGroup>
+                </properties>
+            </property>
+            <property key="DS" type="datasource" isList="true" required="false">
+                <caption>Data source</caption>
+                <description>When the widget needs to reload because the data grid 2 reloads it's data.</description>
+            </property>
+            <!-- <property key="manualReload" type="attribute" required="false">
+                <caption>Manual Reload</caption>
+                <description>In case the data grid 2 does a reload and the widget needs to react.</description>
+                <attributeTypes>
+                    <attributeType name="Boolean"/>
+                </attributeTypes>
+            </property> -->
         </propertyGroup>
     </properties>
 </widget>
