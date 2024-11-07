@@ -207,12 +207,12 @@ export function ResponsiveDatagridTwo({
     }
 
     function resetCollapsibles() {
-        const allCollapsibles = [...datagridWidgetRef.current.querySelectorAll(".tr-resp-collapsible")];
+        const allCollapsibles = [...datagridWidgetRef.current?.querySelectorAll(".tr-resp-collapsible")];
         allCollapsibles.forEach(collapsible => collapsible.remove());
     }
 
     function resetHiddenColumns() {
-        const hiddenColumns = [...datagridWidgetRef.current.querySelectorAll(".th.hidden, .td.hidden")];
+        const hiddenColumns = [...datagridWidgetRef.current?.querySelectorAll(".th.hidden, .td.hidden")];
         hiddenColumns.forEach(hiddenColumn => hiddenColumn.classList.remove("hidden"));
     }
 
@@ -234,7 +234,7 @@ export function ResponsiveDatagridTwo({
     }
 
     useEffect(() => {
-        if (canRender && screenMode) {
+        if (canRender && screenMode && datagridRowsRef.current.length) {
             const headers = [...datagridRowsRef.current[0].querySelectorAll(".th")];
 
             // For desktop leave / restore default. For other situations update to mobile / tablet columns

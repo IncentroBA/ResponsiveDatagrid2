@@ -1,7 +1,7 @@
 {
     "name": "responsivedatagridtwo",
     "widgetName": "ResponsiveDatagridTwo",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Add-on for Data grid 2 to make columns respond to the page width and hide columns behind a collapsible chevron when there is less room.",
     "copyright": "2024 Incentro International B.V.",
     "author": "Rob Duits",
@@ -25,10 +25,10 @@
         "release": "pluggable-widgets-tools release:web"
     },
     "devDependencies": {
-        "@mendix/pluggable-widgets-tools": "^10.5.0"
+        "@mendix/pluggable-widgets-tools": "^10.16.0"
     },
     "dependencies": {
-        "classnames": "^2.2.6"
+        "classnames": "^2.5.1"
     },
     "resolutions": {
         "react": "18.2.0",
