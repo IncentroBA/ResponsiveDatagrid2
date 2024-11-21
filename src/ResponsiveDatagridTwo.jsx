@@ -239,7 +239,7 @@ export function ResponsiveDatagridTwo({
 
             // For desktop leave / restore default. For other situations update to mobile / tablet columns
             if (screenMode === "large-desktop") {
-                tableContent.setAttribute("style", templateColumns);
+                tableContent?.setAttribute("style", templateColumns);
                 resetCollapsibles();
                 resetHiddenColumns();
                 resetChevrons();
