@@ -50,6 +50,10 @@ export function ResponsiveDatagridTwo({
     }
 
     function setGridColumns() {
+        if (!templateColumns) {
+            return;
+        }
+
         const columnArray = templateColumns.replace("grid-template-columns: ", "").split(/ (?![^()]*\))/);
         const maxColumnArray = columnArray.slice(
             0,
@@ -70,7 +74,9 @@ export function ResponsiveDatagridTwo({
             maxColumnArray.splice(2, 1, "1fr");
         }
 
-        tableContent.setAttribute("style", `grid-template-columns: ${maxColumnArray.join(" ").replace(";", "")};`);
+        if (tableContent) {
+            tableContent.setAttribute("style", `grid-template-columns: ${maxColumnArray.join(" ").replace(";", "")};`);
+        }
     }
 
     function toggleTrCollapse(event, chevronBtn) {
@@ -207,7 +213,7 @@ export function ResponsiveDatagridTwo({
     }
 
     function resetCollapsibles() {
-        const allCollapsibles = [...datagridWidgetRef.current?.querySelectorAll(".tr-resp-collapsible")];
+        const allCollapsibles = [...(datagridWidgetRef.current?.querySelectorAll(".tr-resp-collapsible") || [])];
         allCollapsibles.forEach(collapsible => collapsible.remove());
     }
 
@@ -239,17 +245,21 @@ export function ResponsiveDatagridTwo({
 
             // For desktop leave / restore default. For other situations update to mobile / tablet columns
             if (screenMode === "large-desktop") {
-                tableContent?.setAttribute("style", templateColumns);
-                resetCollapsibles();
-                resetHiddenColumns();
-                resetChevrons();
+                if (tableContent) {
+                    tableContent?.setAttribute("style", templateColumns);
+                    resetCollapsibles();
+                    resetHiddenColumns();
+                    resetChevrons();
+                }
             } else {
-                setGridColumns();
-                resetCollapsibles();
-                resetHiddenColumns();
-                resetChevrons();
-                renderElements();
-                headers.forEach(header => header.addEventListener("click", onSort));
+                if (tableContent) {
+                    setGridColumns();
+                    resetCollapsibles();
+                    resetHiddenColumns();
+                    resetChevrons();
+                    renderElements();
+                    headers.forEach(header => header.addEventListener("click", onSort));
+                }
             }
         }
 
@@ -296,7 +306,9 @@ export function ResponsiveDatagridTwo({
         const observer = new MutationObserver(() => {
             observer.disconnect();
             if (datagridWidgetRef.current) {
-                setTableContent(datagridWidgetRef.current.querySelector(".widget-datagrid .widget-datagrid-grid-body"));
+                setTableContent(
+                    datagridWidgetRef.current.querySelector(".widget-datagrid .widget-datagrid-grid.table")
+                );
             }
             observer.observe(datagridWidgetRef.current, config);
         });
